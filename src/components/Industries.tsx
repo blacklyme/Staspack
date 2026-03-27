@@ -1,6 +1,7 @@
 "use client";
 
-import ScrollReveal from "./ScrollReveal";
+import { motion } from "framer-motion";
+import { FadeIn, StaggerContainer, StaggerItem } from "./FadeIn";
 import {
   ShoppingCart,
   Truck,
@@ -31,7 +32,7 @@ export default function Industries() {
   return (
     <section id="industries" className="py-24 sm:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <ScrollReveal className="text-center max-w-2xl mx-auto mb-16">
+        <FadeIn className="text-center max-w-2xl mx-auto mb-16">
           <p className="text-sm font-semibold text-brand-gold tracking-wide uppercase mb-3">
             Industries We Serve
           </p>
@@ -42,32 +43,32 @@ export default function Industries() {
             We work with procurement teams, founders, directors, and operations leaders
             across every sector that relies on packaging and supply chain efficiency.
           </p>
-        </ScrollReveal>
+        </FadeIn>
 
-        <ScrollReveal variant="stagger">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {INDUSTRIES.map((industry) => {
-              const Icon = industry.icon;
-              return (
-                <div
-                  key={industry.name}
+        <StaggerContainer faster className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {INDUSTRIES.map((industry) => {
+            const Icon = industry.icon;
+            return (
+              <StaggerItem key={industry.name}>
+                <motion.div
                   className="group flex flex-col items-center gap-3 p-6 rounded-xl border border-brand-teal/[0.06] bg-[var(--brand-cream)]
-                             cursor-default transition-all duration-250 hover:border-brand-teal/15 hover:shadow-[0_4px_16px_rgba(15,76,92,0.05)]"
-                  style={{ transitionTimingFunction: "var(--ease-out)" }}
+                             cursor-default h-full
+                             transition-shadow duration-250 hover:border-brand-teal/15 hover:shadow-[0_4px_16px_rgba(15,76,92,0.05)]"
+                  whileHover={{ y: -3 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-brand-teal/[0.06] flex items-center justify-center
-                                  transition-colors duration-250 group-hover:bg-brand-teal/10"
-                       style={{ transitionTimingFunction: "var(--ease-out)" }}>
+                                  transition-colors duration-250 group-hover:bg-brand-teal/10">
                     <Icon size={22} className="text-brand-teal" />
                   </div>
                   <span className="text-sm font-medium text-brand-teal-dark text-center leading-snug">
                     {industry.name}
                   </span>
-                </div>
-              );
-            })}
-          </div>
-        </ScrollReveal>
+                </motion.div>
+              </StaggerItem>
+            );
+          })}
+        </StaggerContainer>
       </div>
     </section>
   );

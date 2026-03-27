@@ -1,6 +1,7 @@
 "use client";
 
-import ScrollReveal from "./ScrollReveal";
+import { motion } from "framer-motion";
+import { FadeIn, StaggerContainer, StaggerItem } from "./FadeIn";
 import {
   Package,
   Box,
@@ -27,7 +28,7 @@ export default function Products() {
   return (
     <section id="products" className="py-24 sm:py-32">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <ScrollReveal className="text-center max-w-2xl mx-auto mb-16">
+        <FadeIn className="text-center max-w-2xl mx-auto mb-16">
           <p className="text-sm font-semibold text-brand-gold tracking-wide uppercase mb-3">
             Products We Source
           </p>
@@ -38,22 +39,22 @@ export default function Products() {
             From stretch film to sustainable materials, we source from vetted
             European and Turkish manufacturers at competitive prices.
           </p>
-        </ScrollReveal>
+        </FadeIn>
 
-        <ScrollReveal variant="stagger">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {PRODUCTS.map((product) => {
-              const Icon = product.icon;
-              return (
-                <div
-                  key={product.name}
+        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {PRODUCTS.map((product) => {
+            const Icon = product.icon;
+            return (
+              <StaggerItem key={product.name}>
+                <motion.div
                   className="group flex items-start gap-4 p-5 rounded-xl bg-white border border-brand-teal/[0.06]
-                             cursor-default transition-all duration-250 hover:border-brand-gold/20 hover:shadow-[0_4px_20px_rgba(212,160,18,0.06)]"
-                  style={{ transitionTimingFunction: "var(--ease-out)" }}
+                             cursor-default h-full
+                             transition-shadow duration-250 hover:border-brand-gold/20 hover:shadow-[0_4px_20px_rgba(212,160,18,0.06)]"
+                  whileHover={{ y: -2 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
                   <div className="w-10 h-10 rounded-lg bg-brand-gold/[0.08] flex items-center justify-center shrink-0
-                                  transition-colors duration-250 group-hover:bg-brand-gold/15"
-                       style={{ transitionTimingFunction: "var(--ease-out)" }}>
+                                  transition-colors duration-250 group-hover:bg-brand-gold/15">
                     <Icon size={18} className="text-brand-gold" />
                   </div>
                   <div>
@@ -64,11 +65,11 @@ export default function Products() {
                       {product.desc}
                     </p>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </ScrollReveal>
+                </motion.div>
+              </StaggerItem>
+            );
+          })}
+        </StaggerContainer>
       </div>
     </section>
   );

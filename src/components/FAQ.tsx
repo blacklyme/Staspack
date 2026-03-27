@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import ScrollReveal from "./ScrollReveal";
+import { motion, AnimatePresence } from "framer-motion";
+import { FadeIn } from "./FadeIn";
 import { ChevronDown } from "lucide-react";
 
 const FAQS = [
@@ -31,44 +32,43 @@ const FAQS = [
   },
 ];
 
-function FAQItem({ faq, index }: { faq: typeof FAQS[0]; index: number }) {
+function FAQItem({ faq }: { faq: (typeof FAQS)[0] }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div
-      className="border-b border-brand-teal/[0.08] last:border-0"
-    >
+    <div className="border-b border-brand-teal/[0.08] last:border-0">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between gap-4 py-5 text-left cursor-pointer
                    transition-colors duration-200 hover:text-brand-teal"
-        style={{ transitionTimingFunction: "var(--ease-out)" }}
         aria-expanded={open}
       >
         <span className="text-base font-heading font-semibold text-brand-teal-dark pr-4">
           {faq.q}
         </span>
-        <ChevronDown
-          size={20}
-          className={`text-brand-teal shrink-0 transition-transform duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
-          style={{ transitionTimingFunction: "var(--ease-out)" }}
-        />
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+          className="shrink-0"
+        >
+          <ChevronDown size={20} className="text-brand-teal" />
+        </motion.span>
       </button>
-      <div
-        className="grid transition-all duration-300"
-        style={{
-          gridTemplateRows: open ? "1fr" : "0fr",
-          transitionTimingFunction: "var(--ease-out)",
-        }}
-      >
-        <div className="overflow-hidden">
-          <p className="pb-5 text-sm text-brand-slate/75 leading-relaxed pr-10">
-            {faq.a}
-          </p>
-        </div>
-      </div>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+            className="overflow-hidden"
+          >
+            <p className="pb-5 text-sm text-brand-slate/75 leading-relaxed pr-10">
+              {faq.a}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -77,22 +77,22 @@ export default function FAQ() {
   return (
     <section id="faq" className="py-24 sm:py-32">
       <div className="max-w-3xl mx-auto px-5 sm:px-8">
-        <ScrollReveal className="text-center mb-12">
+        <FadeIn className="text-center mb-12">
           <p className="text-sm font-semibold text-brand-gold tracking-wide uppercase mb-3">
             Questions & Answers
           </p>
           <h2 className="text-3xl sm:text-4xl font-heading font-bold text-brand-teal-dark leading-tight">
             Frequently asked questions
           </h2>
-        </ScrollReveal>
+        </FadeIn>
 
-        <ScrollReveal>
+        <FadeIn delay={0.1}>
           <div className="bg-white rounded-2xl border border-brand-teal/[0.06] shadow-[0_2px_12px_rgba(15,76,92,0.04)] px-6 sm:px-8">
             {FAQS.map((faq, i) => (
-              <FAQItem key={i} faq={faq} index={i} />
+              <FAQItem key={i} faq={faq} />
             ))}
           </div>
-        </ScrollReveal>
+        </FadeIn>
       </div>
     </section>
   );

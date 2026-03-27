@@ -1,6 +1,7 @@
 "use client";
 
-import ScrollReveal from "./ScrollReveal";
+import { motion } from "framer-motion";
+import { FadeIn } from "./FadeIn";
 import { MapPin, CheckCircle2, ArrowRight } from "lucide-react";
 
 const UK_BENEFITS = [
@@ -27,7 +28,7 @@ export default function Bridge() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8">
-        <ScrollReveal className="text-center max-w-2xl mx-auto mb-16">
+        <FadeIn className="text-center max-w-2xl mx-auto mb-16">
           <p className="text-sm font-semibold text-brand-gold-light tracking-wide uppercase mb-3">
             Our Unique Model
           </p>
@@ -38,12 +39,16 @@ export default function Bridge() {
             A dual-country presence that gives you the best of both worlds:
             strategic oversight from the UK, hands-on sourcing from Turkey.
           </p>
-        </ScrollReveal>
+        </FadeIn>
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* UK Card */}
-          <ScrollReveal variant="left">
-            <div className="relative p-8 sm:p-10 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-sm">
+          <FadeIn variant="left">
+            <motion.div
+              className="relative p-8 sm:p-10 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-sm h-full"
+              whileHover={{ y: -4, borderColor: "rgba(255,255,255,0.2)" }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-brand-gold/15 flex items-center justify-center">
                   <MapPin size={22} className="text-brand-gold-light" />
@@ -61,12 +66,16 @@ export default function Bridge() {
                   </div>
                 ))}
               </div>
-            </div>
-          </ScrollReveal>
+            </motion.div>
+          </FadeIn>
 
           {/* Turkey Card */}
-          <ScrollReveal variant="right">
-            <div className="relative p-8 sm:p-10 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-sm">
+          <FadeIn variant="right">
+            <motion.div
+              className="relative p-8 sm:p-10 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-sm h-full"
+              whileHover={{ y: -4, borderColor: "rgba(255,255,255,0.2)" }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-brand-teal-light/20 flex items-center justify-center">
                   <MapPin size={22} className="text-brand-teal-light" />
@@ -84,18 +93,18 @@ export default function Bridge() {
                   </div>
                 ))}
               </div>
-            </div>
-          </ScrollReveal>
+            </motion.div>
+          </FadeIn>
         </div>
 
         {/* Connector */}
-        <ScrollReveal className="mt-10 flex justify-center">
+        <FadeIn className="mt-10 flex justify-center" delay={0.2}>
           <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-brand-gold/10 border border-brand-gold/20">
             <span className="text-sm font-semibold text-brand-gold-light">Seamless Collaboration</span>
             <ArrowRight size={16} className="text-brand-gold-light" />
             <span className="text-sm text-white/60">Faster, Cheaper, Better</span>
           </div>
-        </ScrollReveal>
+        </FadeIn>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 "use client";
 
-import ScrollReveal from "./ScrollReveal";
+import { motion } from "framer-motion";
+import { FadeIn } from "./FadeIn";
 import { Award, Briefcase, MapPin } from "lucide-react";
 
 export default function About() {
@@ -9,9 +10,13 @@ export default function About() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left: Visual card */}
-          <ScrollReveal variant="left">
+          <FadeIn variant="left">
             <div className="relative">
-              <div className="bg-brand-teal rounded-2xl p-10 sm:p-12 text-white relative overflow-hidden">
+              <motion.div
+                className="bg-brand-teal rounded-2xl p-10 sm:p-12 text-white relative overflow-hidden"
+                whileHover={{ scale: 1.01 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              >
                 {/* Decorative circles */}
                 <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-white/[0.04] -translate-y-1/2 translate-x-1/2" />
                 <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-brand-gold/10 translate-y-1/2 -translate-x-1/2" />
@@ -40,10 +45,16 @@ export default function About() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Floating badge */}
-              <div className="absolute -bottom-5 -right-3 sm:right-8 bg-white rounded-xl shadow-lg border border-brand-teal/[0.08] px-5 py-3 flex items-center gap-3">
+              <motion.div
+                className="absolute -bottom-5 -right-3 sm:right-8 bg-white rounded-xl shadow-lg border border-brand-teal/[0.08] px-5 py-3 flex items-center gap-3"
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+              >
                 <div className="w-10 h-10 rounded-lg bg-brand-gold/10 flex items-center justify-center">
                   <Briefcase size={18} className="text-brand-gold" />
                 </div>
@@ -51,12 +62,12 @@ export default function About() {
                   <div className="text-sm font-bold text-brand-teal-dark">30+ Years</div>
                   <div className="text-xs text-brand-slate/60">Procurement Expert</div>
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </ScrollReveal>
+          </FadeIn>
 
           {/* Right: Company story */}
-          <ScrollReveal variant="right">
+          <FadeIn variant="right">
             <div>
               <p className="text-sm font-semibold text-brand-gold tracking-wide uppercase mb-3">
                 About Staspack
@@ -97,7 +108,7 @@ export default function About() {
                 </div>
               </div>
             </div>
-          </ScrollReveal>
+          </FadeIn>
         </div>
       </div>
     </section>

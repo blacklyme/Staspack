@@ -1,4 +1,5 @@
 import { Linkedin } from "lucide-react";
+import Image from "next/image";
 
 const FOOTER_LINKS = [
   { label: "Services", href: "#services" },
@@ -16,16 +17,14 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-white">
-                  <path d="M4 6h16M4 10h12M4 14h16M4 18h8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                </svg>
-              </div>
-              <div className="flex items-baseline">
-                <span className="text-lg font-heading font-bold text-brand-gold-light tracking-tight">stas</span>
-                <span className="text-lg font-heading font-bold text-white tracking-tight">pack</span>
-              </div>
+            <div className="mb-4">
+              <Image
+                src="/logo-white.png"
+                alt="Staspack Procurement Services"
+                width={140}
+                height={32}
+                className="h-8 w-auto opacity-90"
+              />
             </div>
             <p className="text-sm text-white/50 leading-relaxed max-w-sm mb-6">
               Your dedicated procurement partner, bridging UK and European businesses

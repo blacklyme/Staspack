@@ -1,6 +1,7 @@
 "use client";
 
-import ScrollReveal from "./ScrollReveal";
+import { motion } from "framer-motion";
+import { FadeIn, StaggerContainer, StaggerItem } from "./FadeIn";
 import {
   Search,
   ClipboardCheck,
@@ -67,7 +68,7 @@ export default function Services() {
   return (
     <section id="services" className="py-24 sm:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <ScrollReveal className="text-center max-w-2xl mx-auto mb-16">
+        <FadeIn className="text-center max-w-2xl mx-auto mb-16">
           <p className="text-sm font-semibold text-brand-gold tracking-wide uppercase mb-3">
             What We Do
           </p>
@@ -78,23 +79,22 @@ export default function Services() {
             We handle the complexity so you can focus on growing your business.
             Every service is backed by 30+ years of hands-on expertise.
           </p>
-        </ScrollReveal>
+        </FadeIn>
 
-        <ScrollReveal variant="stagger">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {SERVICES.map((service) => {
-              const Icon = service.icon;
-              return (
-                <div
-                  key={service.title}
+        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {SERVICES.map((service) => {
+            const Icon = service.icon;
+            return (
+              <StaggerItem key={service.title}>
+                <motion.div
                   className="group relative p-6 rounded-2xl border border-brand-teal/[0.06] bg-[var(--brand-cream)]
-                             cursor-pointer shimmer-hover
-                             transition-all duration-250 hover:border-brand-teal/15 hover:shadow-[0_8px_30px_rgba(15,76,92,0.06)]"
-                  style={{ transitionTimingFunction: "var(--ease-out)" }}
+                             cursor-pointer shimmer-hover h-full
+                             transition-shadow duration-250 hover:border-brand-teal/15 hover:shadow-[0_8px_30px_rgba(15,76,92,0.06)]"
+                  whileHover={{ y: -4 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-brand-teal/[0.06] flex items-center justify-center mb-5
-                                  transition-colors duration-250 group-hover:bg-brand-teal/10"
-                       style={{ transitionTimingFunction: "var(--ease-out)" }}>
+                                  transition-colors duration-250 group-hover:bg-brand-teal/10">
                     <Icon size={22} className="text-brand-teal" />
                   </div>
                   <h3 className="text-base font-heading font-semibold text-brand-teal-dark mb-2 leading-snug">
@@ -103,11 +103,11 @@ export default function Services() {
                   <p className="text-sm text-brand-slate/70 leading-relaxed">
                     {service.description}
                   </p>
-                </div>
-              );
-            })}
-          </div>
-        </ScrollReveal>
+                </motion.div>
+              </StaggerItem>
+            );
+          })}
+        </StaggerContainer>
       </div>
     </section>
   );

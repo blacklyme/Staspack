@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  animate,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
 
 const STATS = [
   { value: 30, suffix: "+", label: "Years Experience" },
@@ -20,76 +28,77 @@ function AnimatedCounter({
   suffix: string;
   inView: boolean;
 }) {
-  const [count, setCount] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.round(v));
 
   useEffect(() => {
     if (!inView) return;
-    let start = 0;
-    const duration = 1800;
-    const step = Math.ceil(target / (duration / 16));
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(start);
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [inView, target]);
+
+    if (prefersReducedMotion) {
+      count.set(target);
+      return;
+    }
+
+    const controls = animate(count, target, {
+      duration: 2,
+      ease: [0.23, 1, 0.32, 1],
+    });
+
+    return controls.stop;
+  }, [inView, target, count, prefersReducedMotion]);
 
   return (
     <span className="tabular-nums">
-      {prefix}{count}{suffix}
+      {prefix}
+      <motion.span>{rounded}</motion.span>
+      {suffix}
     </span>
   );
 }
 
 export default function Stats() {
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
     <section ref={ref} className="relative -mt-12 z-10 max-w-6xl mx-auto px-5 sm:px-8">
-      <div className="bg-white rounded-2xl shadow-[0_4px_24px_rgba(15,76,92,0.06)] border border-brand-teal/[0.06] p-8 sm:p-10">
+      <motion.div
+        className="bg-white rounded-2xl shadow-[0_4px_24px_rgba(15,76,92,0.06)] border border-brand-teal/[0.06] p-8 sm:p-10"
+        initial={{ opacity: 0, y: 32, filter: "blur(4px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
+      >
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
           {STATS.map((stat, i) => (
-            <div
+            <motion.div
               key={stat.label}
               className={`text-center ${
                 i < STATS.length - 1 ? "lg:border-r lg:border-brand-teal/[0.08]" : ""
               }`}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                delay: i * 0.08,
+                duration: 0.5,
+                ease: [0.23, 1, 0.32, 1],
+              }}
             >
               <div className="text-3xl sm:text-4xl font-heading font-bold text-brand-teal">
                 <AnimatedCounter
                   target={stat.value}
                   prefix={stat.prefix}
                   suffix={stat.suffix}
-                  inView={inView}
+                  inView={isInView}
                 />
               </div>
               <div className="mt-1.5 text-sm font-medium text-brand-slate/60">{stat.label}</div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
